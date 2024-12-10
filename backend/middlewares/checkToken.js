@@ -1,7 +1,6 @@
-const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv");
-dotenv.config();
-
+const jwt = require("jsonwebtoken")
+const dotenv = require("dotenv")
+dotenv.config()
 const checkToken = async (req, res, next) => {
     try {
         const token = req.cookies.token;
@@ -25,5 +24,4 @@ const checkToken = async (req, res, next) => {
         return res.json({ message: "Internal Server Error" });
     }
 };
-
 module.exports = { checkToken };
