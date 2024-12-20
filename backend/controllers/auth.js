@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+const bcryptjs = require("bcryptjs");
 const { pool } = require("../config/db");
 const jwt = require("jsonwebtoken");
 
@@ -20,7 +20,7 @@ const student_signup = async (req, res) => {
             });
         }
 
-        const hashPassword = await bcrypt.hash(password, 10);
+        const hashPassword = await bcryptjs.hash(password, 10);
         const result = await pool.query("INSERT INTO students(student_name, student_email, student_password) VALUES($1, $2, $3) RETURNING student_name, student_email", [student_name, email, hashPassword]);
         const createdStudent = result.rows[0];
 
@@ -54,7 +54,7 @@ const student_login = async (req, res) => {
             });
         }
 
-        const checkPassword = await bcrypt.compare(password, existingUser.student_password);
+        const checkPassword = await bcryptjs.compare(password, existingUser.student_password);
         if (!checkPassword) {
             return res.json({
                 message: "Incorrect password"
@@ -105,7 +105,7 @@ const prof_signup = async (req, res) => {
             });
         }
 
-        const hashPassword = await bcrypt.hash(password, 10);
+        const hashPassword = await bcryptjs.hash(password, 10);
         const result = await pool.query(
             "INSERT INTO professors(professor_name, professor_email, professor_password) VALUES($1, $2, $3) RETURNING professor_name, professor_email",
             [professor_name, email, hashPassword]
@@ -142,7 +142,7 @@ const prof_login = async (req, res) => {
             });
         }
 
-        const checkPassword = await bcrypt.compare(password, existingUser.professor_password);
+        const checkPassword = await bcryptjs.compare(password, existingUser.professor_password);
         if (!checkPassword) {
             return res.json({
                 message: "Incorrect password"
